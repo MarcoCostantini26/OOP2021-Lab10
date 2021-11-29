@@ -106,12 +106,16 @@ public final class LambdaUtilities {
      *         by the supplier
      */
     public static <K, V> Map<K, V> fill(final Map<K, Optional<V>> map, final Supplier<V> def) {
+        Map<K, V> fillMap = new HashMap<>();
+        map.forEach((k, v) -> {
+            fillMap.put(k, v.orElse(def.get()));
+        });
         /*
          * Suggestion: consider Optional.orElse
          * 
          * Keep in mind that a map can be iterated through its forEach method
          */
-        return null;
+        return fillMap;
     }
 
     /**
