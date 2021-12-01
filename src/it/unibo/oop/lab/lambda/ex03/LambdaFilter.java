@@ -19,7 +19,6 @@ import javax.swing.JTextArea;
  * Modify this small program adding new filters.
  * Realize this exercise using as much as possible the Stream library.
  * 
- * 1) Convert to lowercase
  * 
  * 2) Count the number of chars
  * 
@@ -35,7 +34,9 @@ public final class LambdaFilter extends JFrame {
     private static final long serialVersionUID = 1760990730218643730L;
 
     private enum Command {
-        IDENTITY("No modifications", Function.identity());
+        IDENTITY("No modifications", Function.identity()),
+        LOWERCASE("Lower case", x -> x.toLowerCase()),
+        COUNT("Count", x -> String.valueOf(x.length()));
 
         private final String commandName;
         private final Function<String, String> fun;
