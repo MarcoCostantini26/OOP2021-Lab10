@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
+import java.util.Arrays;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,16 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * Modify this small program adding new filters.
- * Realize this exercise using as much as possible the Stream library.
- * 
- * 
- * 2) Count the number of chars
- * 
- * 3) Count the number of lines
- * 
- * 4) List all the words in alphabetical order
- * 
  * 5) Write the count for each word, e.g. "word word pippo" should output "pippo -> 1 word -> 2"
  *
  */
@@ -36,7 +28,16 @@ public final class LambdaFilter extends JFrame {
     private enum Command {
         IDENTITY("No modifications", Function.identity()),
         LOWERCASE("Lower case", x -> x.toLowerCase()),
-        COUNT("Count", x -> String.valueOf(x.length()));
+        COUNT("Count", x -> String.valueOf(x.length())),
+        COUNT_LINES("Count lines", x -> String.valueOf(x.lines().count())),
+        ALPHABETICAL_ORDER("Alphabetical", x -> Arrays.stream(x.split("")).
+                                                                sorted().
+                                                                collect(Collectors.joining())),
+        COUNT_FOR_EACH_WORD("Count for each word", x -> Arrays.stream(x.split(" ")).
+                                                                        collect(Collectors.groupingBy(y -> y.toString(), Collectors.counting())).
+                                                                        entrySet().stream().
+                                                                        map(z -> z.getKey() + "->" + z.getValue()).
+                                                                        collect(Collectors.joining()));
 
         private final String commandName;
         private final Function<String, String> fun;
